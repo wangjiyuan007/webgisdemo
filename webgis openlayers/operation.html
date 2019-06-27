@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OSM地图操作</title>
+
+    <link href="../webgis openlayers/css/ol.css" rel="stylesheet" type="text/css">
+    <!-- <link href="../css/base.css" rel="stylesheet" type="text/css"> -->
+    <link href="../webgis openlayers/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <script src="../webgis openlayers/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="../webgis openlayers/js/ol.js" type="text/javascript"></script>
+    <script src="../webgis openlayers/js/bootstrap.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        #map{ width:100%;height: 570px;}
+        #menu{ float: left; position: absolute;bottom: 10px;z-index: 2000;}
+        .tooltip-inner {white-space: nowrap;}
+    </style>
+</head>
+<body>
+    <div id="map">
+        <div id="menu">
+                <button id="zoom-out">单击缩小</button>
+                <button id="zoom-in">单击放大</button>
+                <button id="panto">平移到[武汉]</button>
+                <button id="restore">复位</button>
+        </div>        
+    </div>
+    <script>
+        var map = new ol.Map({
+            target : 'map',
+            layers : [
+                new ol.layer.Tile({
+                    source : new ol.source.OSM()
+                })
+            ],
+            view : new ol.View({
+                center : [12950000,4860000],
+                zoom : 8,
+                minZomm : 6,
+                maxZomm : 12,
+                rotation : Math.PI /6
+            })
+        });
+        //地图视图的初始化参数
+        var view = map.getView();
+        var zoom = view.getZoom();
+        var center = view.getCenter();
+        var rotation = view.getRotation();
+        //实现单击缩小按钮的功能
+        $("#zoom-out").click(function(){
+            var view = map.getView();
+            var zoom = view.getZoom();
+            view.setZoom(zoom - 1);
+        });
+        //实现单击放大按钮的功能
+        $("#zoom-in").click(function(){
+            var view = map.getView();
+            var zoom = view.getZoom();
+            view.setZoom(zoom + 1);
+        });
+        //平移功能，平移至武汉
+        $("#panto").click(function(){
+            var view = map.getView();
+            var wh = ol.proj.fromLonLat([114.31667, 30.51667]);
+            view.setCenter(wh);
+        });
+        //复位功能(复位到初始状态)
+        $("#restore").click(function(){
+            view.setCenter(center);
+            view.setRotation(rotation);
+            view.setZoom(zoom);
+        });
+        //为内置的缩放控件与旋转控件添加tooltip提示信息
+        $('.ol-zoom-in, .ol-zoom-out').tooltip({
+            placement : 'right'
+        });
+        $('.ol-zoom-reset, .ol-attribution button[title]').tooltip({
+            placement : 'left'
+        });
+    </script>
+</body>
+</html>
