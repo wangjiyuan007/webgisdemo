@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>OSM地图</title>
+    <title>OSM地图动画效果</title>
 
     <link href="../webgis openlayers/css/ol.css" rel="stylesheet" type="text/css">
     <!-- <link href="../css/base.css" rel="stylesheet" type="text/css"> -->
@@ -55,7 +55,7 @@
        $('#rotate').click(function(){
            var rotate = ol.animation.rotate({
                duration: 2000, //持续时间
-               rotation: -4*Math.PI  //旋转角度
+               rotation: -2*Math.PI  //旋转角度
            });
            map.beforeRender(rotate);//在地图渲染前设置旋转动画效果
            view.setCenter(shenyang);
