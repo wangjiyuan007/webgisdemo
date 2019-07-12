@@ -67,7 +67,9 @@ module.exports = [
 
     // development server options
     devServer: {
-      contentBase: path.join(__dirname, 'dist')
+      contentBase: path.join(__dirname, 'dist'),
+      open:true,
+      port:8081
     }
   }
 ];
