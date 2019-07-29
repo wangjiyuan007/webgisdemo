@@ -121,10 +121,27 @@
                 天地图地形图: TiandituTerrain,
                 谷歌街道图: GoogleNormal,
                 谷歌影像图: GoogleSatellite,
-                高德街道图: GaodeNormal,
-                高德影像图: GaodeSatellite
+                高德影像图: GaodeSatellite,
+                高德街道图: GaodeNormal
             };
             L.control.layers(baseLayers).addTo(mymap);
+            //标记，圆圈和多边形
+            var marker = L.marker([30.0, 116.0]).addTo(mymap);
+            var circle = L.circle([30.2, 116.2], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 10000
+            }).addTo(mymap);
+            var polygon = L.polygon([
+                [30.0, 116.8],
+                [30.3, 116.9],
+                [29.9, 116.2]
+            ]).addTo(mymap);
+            //使用弹出窗口
+            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+            circle.bindPopup("I am a circle.");
+            polygon.bindPopup("I am a polygon.");
         });
     </script>
 </body>
