@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./libs/leaflet.js"></script>
+    <script src="./libs/Proj4Leaflet-master/lib/proj4.js"></script>
+    <script src="./libs/Proj4Leaflet-master/src/proj4leaflet.js"></script>
+    <script src="./libs/leaflet.ChineseTmsProviders.js"></script>
+    <script src="./libs/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./libs/leaflet.css" />
+    <style>
+        #mapid {
+            width: 100%;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Leaflet Layers</h2>
+    <div id="mapid"></div>
+    <script>
+        //初始化地图
+        $(document).ready(function () {
+            // mapbox 地图服务URL
+            var mapboxUrl =
+                'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+            var mapAttr =
+                'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+            // Mapbox地图服务
+            var MapboxSatellite = L.tileLayer(mapboxUrl, {
+                id: 'mapbox.satellite',
+                attribution: mapAttr
+            });
+
+            var MapboxStreets = L.tileLayer(mapboxUrl, {
+                id: 'mapbox.streets',
+                attribution: mapAttr
+            });
+            //OSM地图服务
+            var OSM = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: mapAttr
+            });
+            //ArcGIS地图服务
+            var ArcGIS = L.tileLayer(
+                'http://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                    minZoom: 1, //缩放最小级别
+                    maxZoom: 19, //缩放最大级别
+                    subdomains: ["server", "services"], //子域名，可选
+                    attribution: "USGS, NOAA", //属性提供者，可选
+                    attributionUrl: "https://static.arcgis.com/attribution/World_Street_Map" //属性数据
+                })
+            //智图地图服务
+            var GeoqNormal = L.tileLayer.chinaProvider('Geoq.Normal.Map', {
+                attribution: mapAttr
+            })
+            //天地图地图服务
+            var TiandituNormalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
+                    attribution: mapAttr
+                }),
+                TiandituNormala = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
+                    attribution: mapAttr
+                });
+            var Tianditusatellitem = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
+                    attribution: mapAttr
+                }),
+                Tianditusatellitea = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
+                    attribution: mapAttr
+                });
+            var TiandituTerrainm = L.tileLayer.chinaProvider('TianDiTu.Terrain.Map', {
+                attribution: mapAttr
+            });
+            var TiandituTerraina = L.tileLayer.chinaProvider('TianDiTu.Terrain.Annotion', {
+                attribution: mapAttr
+            });
+
+            var TiandituNormal = L.layerGroup([TiandituNormalm, TiandituNormala]),
+                Tianditusatellite = L.layerGroup([Tianditusatellitem, Tianditusatellitea]),
+                TiandituTerrain = L.layerGroup([TiandituTerrainm, TiandituTerraina]);
+            //谷歌地图服务
+            var GoogleNormal = L.tileLayer.chinaProvider('Google.Normal.Map', {
+                    attribution: mapAttr
+                }),
+                GoogleSatellite = L.tileLayer.chinaProvider('Google.Satellite.Map', {
+                    attribution: mapAttr
+                });
+            //高德地图服务
+            var GaodeNormal = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
+                attribution: mapAttr
+            });
+            var GaodeSatellitem = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+                attribution: mapAttr
+            });
+            var GaodeSatellitea = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
+                attribution: mapAttr
+            });
+            var GaodeSatellite = L.layerGroup([GaodeSatellitem, GaodeSatellitea]);
+            //填充map
+            var mymap = L.map('mapid', {
+                center: [29.7, 119.3],
+                zoom: 5,
+                // 展示多个图层
+                layers: [MapboxSatellite, MapboxStreets, OSM, ArcGIS, GeoqNormal, TiandituNormal,
+                    Tianditusatellite,
+                    TiandituTerrain, GoogleNormal, GoogleSatellite, GaodeNormal, GaodeSatellite
+                ]
+            });
+            var baseLayers = {
+                Mapbox街道图: MapboxStreets,
+                Mapbox影像图: MapboxSatellite,
+                OSM街道图: OSM,
+                ArcGIS底图: ArcGIS,
+                智图街道图: GeoqNormal,
+                天地图街道图: TiandituNormal,
+                天地图影像图: Tianditusatellite,
+                天地图地形图: TiandituTerrain,
+                谷歌街道图: GoogleNormal,
+                谷歌影像图: GoogleSatellite,
+                高德街道图: GaodeNormal,
+                高德影像图: GaodeSatellite
+            };
+            L.control.layers(baseLayers).addTo(mymap);
+        });
+    </script>
+</body>
+
+</html>
