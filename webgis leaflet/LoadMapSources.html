@@ -142,6 +142,16 @@
             marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
+
+            //将弹出窗口用作图层
+            var popup = L.popup().setLatLng([30.0,116.1]).setContent("I am a standalone popup.").openOn(mymap);
+            
+            //弹出图层触发事件、处理事件
+            var popup = L.popup();
+            function onMapClick(e){
+                popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(mymap);
+            }
+            mymap.on('click',onMapClick)
         });
     </script>
 </body>
