@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GeoJSON加载</title>
+    <script src="./libs/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="./libs/leaflet.css" />
+    <style>
+        #mapid {
+            width: 100%;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>GeoJSON加载</h2>
+    <div id="mapid"></div>
+
+    <script>
+        //OSM地图服务
+        var OSM = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        var map = L.map('mapid', {
+            center: [29.7, 119.3],
+            zoom: 5,
+            layers: OSM
+        });
+
+        var geojsonFeature = {
+            "type": "Feature",
+            "properties": {
+                "name": "Coors Field",
+                "amenity": "Baseball Stadium",
+                "popupContent": "This is where the Rockies play!"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [30.593164, 114.304558]
+            }
+        };
+
+        var myLines = [{
+            "type": "LineString",
+            "coordinates": [
+                [-100, 40],
+                [-105, 45],
+                [-110, 55]
+            ]
+        }, {
+            "type": "LineString",
+            "coordinates": [
+                [-105, 40],
+                [-110, 45],
+                [-115, 55]
+            ]
+        }];
+
+        var myLayer = L.geoJSON().addTo(map);
+        myLayer.addData(geojsonFeature);
+        L.geoJSON(geojsonFeature).addTo(map);
+    </script>
+</body>
+
+</html>
