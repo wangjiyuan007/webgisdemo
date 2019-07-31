@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义图标</title>
+    <script src="./libs/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="./libs/leaflet.css" />
+    <style>
+        #mapid {
+            width: 100%;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Leaflet CustomIcons</h2>
+    <div id="mapid"></div>
+    <script>
+        //OSM地图服务
+        var OSM = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+        var map = L.map('mapid', {
+            center: [29.7, 119.3],
+            zoom: 5,
+            layers: OSM
+        });
+
+        /**
+        您可能已经注意到我们使用new关键字创建了LeafIcon实例。那么为什么没有它就会创建所有Leaflet类？答案很简单：
+        真正的Leaflet类以大写字母命名（例如L.Icon），它们也需要创建new，但也有小写名称（L.icon）的快捷方式，为
+        方便起见，如下所示：
+        L.icon = function (options) {
+        return new L.Icon(options);
+        };
+        */
+        // var greenIcon = L.icon({
+        //     iconUrl: './libs/images/leaf-green.png',
+        //     shadowUrl: './libs/images/leaf-shadow.png',
+        //     iconSize: [38, 95], // size of the icon
+        //     shadowSize: [50, 64], // size of the shadow
+        //     iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+        //     shadowAnchor: [4, 62], // the same for the shadow
+        //     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        // });
+        // L.marker([30.593164, 114.304558],{icon:greenIcon}).addTo(map);
+
+        //定义我们自己的包含共享选项的图标类，继承自L.Icon
+        var LeafIcon = L.Icon.extend({
+            options: {
+                shadowUrl: './libs/images/leaf-shadow.png',
+                iconSize: [38, 95],
+                shadowSize: [50, 64],
+                iconAnchor: [22, 94],
+                shadowAnchor: [4, 62],
+                popupAnchor: [-3, -76]
+            }
+        });
+        //从这个类中创建所有三个叶子图标
+        var greenIcon = new LeafIcon({
+                iconUrl: './libs/images/leaf-green.png'
+            }),
+            redIcon = new LeafIcon({
+                iconUrl: './libs/images/leaf-red.png'
+            }),
+            orangeIcon = new LeafIcon({
+                iconUrl: './libs/images/leaf-orange.png'
+            });
+
+        L.marker([30.593164, 114.304558], {
+            icon: greenIcon
+        }).addTo(map).bindPopup("I am a green leaf.");
+        L.marker([30.693164, 114.2004558], {
+            icon: redIcon
+        }).addTo(map).bindPopup("I am a red leaf.");
+        L.marker([30.493164, 114.104558], {
+            icon: orangeIcon
+        }).addTo(map).bindPopup("I am an orange leaf.");
+    </script>
+
+</body>
+
+</html>
